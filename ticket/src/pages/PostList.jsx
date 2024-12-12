@@ -1,29 +1,53 @@
+// src/components/PostList.jsx
 import React, { useEffect, useState } from 'react';
-import axios from '../api/axios';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
+        // Fetch posts from Laravel API
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('/posts');
-                setPosts(response.data);
-            } catch (error) {
-                console.error('Error fetching posts:', error);
+                const response = await fetch('http://127.0.0.1:8000/posts/view', {
+                    method: 'GET', // GET method to fetch data
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch xc');
+                }
+
+                const data = await response.json();
+                setPosts(data); // Set the posts data to state
+            } catch (err) {
+                setError('Failed to fetch pos           ts'); // Handle any errors
+            } finally {
+                setLoading(false); // Stop loading once the data is fetched
             }
         };
 
-        fetchPosts();
+        fetchPosts(); // Call the function to fetch posts
     }, []);
 
+    if (loading) {
+        return <div>Loading...</div>; // Loading state
+    }
+
+    if (error) {
+        return <div>{error}</div>; // Error state
+    }
+
     return (
-        <div>
-            <h1 className="mb-4">Post List</h1>
+        <div className="container mt-4">
+            <h1>Post List</h1>
             <div className="list-group">
                 {posts.map((post) => (
-                    <div key={post.id} className="list-group-item mb-3">
-                        <h3 className="mb-2">{post.title}</h3>
+                    <div key={post.id} className="list-group-item">
+                        <h3>{post.title}</h3>
                         <p>{post.content}</p>
                     </div>
                 ))}

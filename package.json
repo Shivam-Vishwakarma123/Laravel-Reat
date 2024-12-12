@@ -1,6 +1,7 @@
 {
     "private": true,
     "type": "module",
+    "proxy": "http://127.0.0.1:8000",
     "scripts": {
         "build": "vite build",
         "dev": "vite"

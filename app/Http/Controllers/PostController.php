@@ -27,10 +27,13 @@ class PostController extends Controller
     
             case 'view':
             default:
-                $posts = Post::paginate(5); // List all posts
+                $posts = Post::all();
+                return response()->json($posts);
 
-                return response()->json($posts, 201);
-                return view('posts.index', compact('posts'));
+                // $posts = Post::paginate(5); // List all posts
+
+                // return response()->json($posts, 201);
+                // return view('posts.index', compact('posts'));
         }
     }
 

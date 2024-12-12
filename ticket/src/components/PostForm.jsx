@@ -12,7 +12,7 @@ const PostForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/posts', formData);
+            await axios.post('/posts/view', formData);
             alert('Post created successfully!');
         } catch (error) {
             console.error('Failed to create post:', error.response?.data);
